@@ -1,7 +1,9 @@
 # Filter CRUD resources using simple query parameters
 
-This library makes searching and filtering super easy.
+![GitHub Workflow Status](https://img.shields.io/github/workflow/status/johnylemon/laravel-searchable/run-tests?label=tests)
+![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/johnylemon/laravel-searchable?label=release)
 
+This library makes searching and filtering super easy.
 
 ## Getting started
 
@@ -10,14 +12,15 @@ This library makes searching and filtering super easy.
 ```
 composer require johnylemon/laravel-searchable
 ```
+2. Register `Johnylemon\Searchable\Providers\SearchableServiceProvider`
 
-2. publish config using publish command
+3. Publish config using publish command
 
 ```
 php artisan vendor:publish
 ```
 
-3. add `Johnylemon\Searchable\Traits\Searchable` trait any model you want and `searchable` method defining searchable properties
+4. add `Johnylemon\Searchable\Traits\Searchable` trait any model you want and `searchable` method defining searchable properties
 
 ```php
 
@@ -45,7 +48,7 @@ class User extends Model
 
 ```
 
-4. Enjoy!
+5. **Enjoy!**
 
 
 ## Basic usage
@@ -198,7 +201,7 @@ This package ships with `searchable:generate` command, which can be used to rapi
 
 This command will place brand new class in directory specified in config
 ```
-php artisan searchable:generate MySeach
+php artisan searchable:generate MySearch
 ```
 
 ## Testing
@@ -214,4 +217,8 @@ The MIT License (MIT)
 
 ## Contact
 
-Developed with ❤ by [johnylemon](https://github.com/johnylemon)
+Visit me at [https://johnylemon.dev](https://johnylemon.dev)
+
+---
+
+Developed with ❤ by [johnylemon](https://github.com/johnylemon).
