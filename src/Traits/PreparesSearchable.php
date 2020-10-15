@@ -12,6 +12,12 @@ use Johnylemon\Searchable\Search\{
 
 trait PreparesSearchable
 {
+    /**
+     * Generate seach query.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
     protected function buildSearchQuery($query)
     {
         foreach(request()->query() as $property => $value)
@@ -25,6 +31,12 @@ trait PreparesSearchable
         return $query;
     }
 
+    /**
+     * Applies
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
     protected function applyFilter($query, $property, $value)
     {
         $filter = $this->findFilter($property, $this->searchable());
@@ -35,7 +47,14 @@ trait PreparesSearchable
         return $filter->apply($query, $property, $value);
     }
 
-    protected function findFilter(&$property, array $searchables = []): ?Search
+    /**
+     * Returns filter valid for current case
+     *
+     * @param     string    $property       property name
+     * @param     array     $searchables    searchable properties
+     * @return    null|Johnylemon\Searchable\Search\Seach   Search instance or null if not set
+     */
+    protected function findFilter(string &$property, array $searchables = []): ?Search
     {
         if(isset($searchables[$property]))
         {
@@ -44,19 +63,17 @@ trait PreparesSearchable
             if(is_string($filter))
             {
                 if($this->isAlias($filter))
-                {
-                    return app($this->getAlias($filter));
-                }
+                    return $this->buildFilter($this->getAlias($filter));
 
                 if(class_exists($filter))
-                    return app($filter);
+                    return $this->buildFilter($filter);
             }
 
             if($filter instanceof Search)
                 return $filter;
 
             if($filter instanceof Closure)
-                return app()->makeWith(ClosureSearch::class, ['closure' => $filter]);
+                return $this->buildFilter(ClosureSearch::class, ['closure' => $filter]);
 
             $property = $filter;
 
@@ -69,13 +86,37 @@ trait PreparesSearchable
         return NULL;
     }
 
-    protected function isAlias($filter)
+    /**
+     * Build filter
+     *
+     * @param     string    $filter    filter name
+     * @param     array     $params    build parameter
+     * @return    Johnylemon\Searchable\Search\Seach               Search filter
+     */
+    protected function buildFilter(string $filter, array $params = []): Search
+    {
+        return app()->makeWith($filter, $params);
+    }
+
+    /**
+     * Check if passed filter name is an alias
+     *
+     * @param     string     $filter    filter name
+     * @return    bool
+     */
+    protected function isAlias(string $filter): bool
     {
         return isset(config('laravel-searchable.aliases')[$filter]);
     }
 
-    protected function getAlias($filter)
+    /**
+     * Get concrete filter name for given alias
+     *
+     * @param     string    $alias    alias name
+     * @return    string
+     */
+    protected function getAlias(string $alias): string
     {
-        return config('laravel-searchable.aliases')[$filter];
+        return config('laravel-searchable.aliases')[$alias];
     }
 }

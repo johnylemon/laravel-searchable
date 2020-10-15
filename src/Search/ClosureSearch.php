@@ -6,17 +6,25 @@ use Closure;
 
 class ClosureSearch extends Search
 {
+    /**
+     * Closure to be called later
+     * @var    \Closure
+     */
     protected $closure;
 
+    
     public function __construct(Closure $closure)
     {
         $this->closure = $closure;
     }
 
-    public function apply($query, $property, $value)
+    /**
+     * @inheritDoc
+     */
+    public function apply($query, string $property, $value): void
     {
         $closure = $this->closure;
 
-        return $closure(...func_get_args());
+        $closure(...func_get_args());
     }
 }

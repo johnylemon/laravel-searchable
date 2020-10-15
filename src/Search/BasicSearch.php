@@ -4,8 +4,11 @@ namespace Johnylemon\Searchable\Search;
 
 class BasicSearch extends Search
 {
-    public function apply($query, $property, $value)
+    /**
+     * @inheritDoc
+     */
+    public function apply($query, string $property, $value): void
     {
-        return $query->where($property, $value);
+        $query->where($property, $value);
     }
 }

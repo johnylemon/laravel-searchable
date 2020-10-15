@@ -2,12 +2,19 @@
 
 namespace {{NAMESPACE}};
 
-use Johnylemon\Searchable\Search;
+use Johnylemon\Searchable\Search\Search;
 
 class {{NAME}} extends Search
 {
-    public function apply($query, $property, $value)
+    /**
+     * Apply filtering logic
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param  string  $property    property name
+     * @param  mixed   $value       property value
+     */
+    public function apply($query, string $property, $value): void
     {
-        return $query;
+        // create an awesome logic
     }
 }
