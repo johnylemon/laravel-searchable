@@ -1,21 +1,208 @@
-# Keep frequently used and helpful functions in one place
+# Filter CRUD resources using simple query parameters
 
-Just a simple library holding functions that may be helpful sometimes.  
-
-This package may contain more than this one function, but nothing more is needed now.
+This libray makes searching and filtering absolutery easy.
 
 
 ## Getting started
 
-Add repository
+ 1. Add repository
 
 ```
 composer require johnylemon/laravel-searchable
 ```
 
-Enjoy!
+2. publish config using publish command
+
+```
+php artisan vendor:publish
+```
+
+3. add `Johnylemon\Searchable\Traits\Searchable` trait any model you want and `searchable` method defining searchable properties
+
+```php
+
+<?php
+
+use Johnylemon\Searchable\Traits\Searchable;
+
+class User extends Model
+{
+    use Searchable;
+
+    /**
+     * Searchable properties array
+     *
+     * @return    array    searchables
+     */
+    protected function searchable(): array
+    {
+        return [
+            'name',
+            'email',
+        ];
+    }
+}
+
+```
+
+4. Enjoy!
+
+
+## Basic usage
+
+To enable searching for current query use `withSearch` trait:
+
+```php
+ModelName::withSearch()->get();
+```
+
+Example presented below will return all users named `John`
+
+```php
+
+Route::get('/users?name=John', function(){
+
+    ModelName::withSearch()->get();
+
+});
+
+
+```
+
+Return users with name `John` and nick set to `johnylemon`
+
+```php
+
+Route::get('/users?name=John&nick=johnylemon', function(){
+
+    ModelName::withSearch()->get();
+
+});
+
+
+
+```
+
+## Default search filter
+
+By default every property will be filtered using `BasicSearch` search filter.
+This filter will use simple `where("property", "value")` condition.
+
+Feel free to change this setting in you config file.
+
+
+## Customizing searchables and aliases
+
+Searchable array may return more complex array than simple property names.
+
+You may define which filter should be used for every field:
+
+```php
+
+use App\Search\CustomSearch;
+
+/**
+ * Searchable properties array
+ *
+ * @return    array    searchables
+ */
+public function searchable(): array
+{
+
+    return [
+        // will be searched using basic seach
+        'last_name',
+
+        // will use `CustomSearch` filter for `first_name` field
+        'first_name' => CustomSearch::class,
+
+        // instead of using custom class, you may use anonymus function
+        'full_name' => function($query, $property, $value) {
+            $query->where(DB::raw("first_name || ' ' || last_name"), $value);
+        },
+
+        // `name` field will be searched same way as `first_name`
+        'name' => 'first_name',
+    ];
+
+}
+
+```
+
+Note that `name` column may be real column in database or not.
+This may be handy if you would like to hide real column names in your search query.
+
+This example will search for `ghost` users, thanks to aliases:
+
+```php
+
+public function searchable(): array
+{
+
+    return [
+        'ghost' => function($query, $property, $value) {
+            $query->whereNotNull('deleted_at');
+        },
+    ];
+
+}
+
+```
+
+
+## Build-in aliases
+
+This package ships with three handy search filters, that may be used for common searching:
+
+
+#### `Like` search filter
+Will use `Johnylemon\Searchable\Search\LikeSeach` class. Will add `%LIKE%` condition.
+
+#### `LikeBegin` search filter
+Will use `Johnylemon\Searchable\Search\LikeBeginSeach` class. Will add `LIKE%` condition.
+
+#### `LikeEnd` search filter
+Will use `Johnylemon\Searchable\Search\LikeEndSeach` class. Will add `%LIKE` condition.
+
+Feel free to use them for your searchables.
+
+Of course typing entire class name each time may be cumbersome, so this package allows you to define custom, easy to remember and type aliases within your config file.
+
+Build-in search filters also can be used as 'like', 'like-begin', and 'like-end' shorthands.
+
+
+```php
+
+public function searchable(): array
+{
+
+    return [
+        //  will be searched using `%LIKE%` provided by `LikeSearch` class
+        'email' => 'like',
+
+        //  will be searched using `LIKE%` provided by `LikeBeginSearch` class
+        'code' => 'like-begin',
+
+        //  will be searched using `%LIKE` provided by `LikeEndSearch` class
+        'suffix' => 'like-end',
+    ];
+
+}
+
+```
+
+
+## Commands
+
+This package ships with `searchable:generate` command, which can be used to rapid generating custom filter classes.
+
+Typing
+```
+php artisan searchable:generate MySeach
+```
+
+will place brand new class in directory specified in config
 
 
 ## License
-
 The MIT License (MIT)
