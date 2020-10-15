@@ -1,0 +1,13 @@
+<?php
+
+namespace {{NAMESPACE}};
+
+use Johnylemon\Searchable\Search;
+
+class {{NAME}} extends Search
+{
+    public function apply($query, $property, $value)
+    {
+        return $query;
+    }
+}

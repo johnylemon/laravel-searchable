@@ -1,0 +1,53 @@
+{
+    "name": "johnylemon/laravel-searchable",
+    "type": "library",
+    "description": "Search and filter user models easily",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Piotr Krzempek",
+            "email": "hello@johnylemon.dev",
+            "homepage": "https://johnylemon.dev"
+        }
+    ],
+    "keywords": [
+        "johnylemon",
+        "laravel",
+        "searchable",
+        "search",
+        "filter"
+    ],
+    "require": {
+        "laravel/framework": "^7.0 || ^8.0",
+        "johnylemon/miscellaneous": "^0.1.0"
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Johnylemon\\Searchable\\Providers\\SearchableServiceProvider"
+            ]
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Johnylemon\\Searchable\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Johnylemon\\Searchable\\Tests\\": "tests"
+        }
+    },
+    "scripts": {
+        "test": "vendor/bin/phpunit"
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "require-dev": {
+        "orchestra/testbench": "^6.2",
+        "phpunit/phpunit": "^9.4"
+    }
+}
