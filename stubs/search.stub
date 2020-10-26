@@ -15,6 +15,6 @@ class {{NAME}} extends Search
      */
     public function apply($query, string $property, $value): void
     {
-        // create an awesome logic
+        // awesome logic here
     }
 }

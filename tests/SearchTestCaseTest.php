@@ -86,7 +86,17 @@ class SearchTestCaseTest extends TestCase
     }
 
     /** @test */
-    public function test_builtin_alias_like()
+    public function test_search_wherein()
+    {
+        $response = $this->get('/searchable-test?first_name[]=Jane&first_name[]=John');
+        $response->assertStatus(200);
+        $response->assertJsonCount(2);
+        $response->assertJsonFragment(['first_name' => 'Jane', 'last_name' => 'Doe']);
+        $response->assertJsonFragment(['first_name' => 'John', 'last_name' => 'Doe']);
+    }
+
+    /** @test */
+    public function test_builtin_shorthand_like()
     {
         $response = $this->get('/searchable-test-like?nick=nn');
         $response->assertStatus(200);
@@ -100,7 +110,7 @@ class SearchTestCaseTest extends TestCase
     }
 
     /** @test */
-    public function test_builtin_alias_like_begin()
+    public function test_builtin_shorthand_like_begin()
     {
         $response = $this->get('/searchable-test-like?first_name=jo');
 
@@ -114,7 +124,7 @@ class SearchTestCaseTest extends TestCase
     }
 
     /** @test */
-    public function test_builtin_alias_like_end()
+    public function test_builtin_shorthand_like_end()
     {
         $response = $this->get('/searchable-test-like?last_name=ki');
         $response->assertStatus(200);

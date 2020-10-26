@@ -30,16 +30,16 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Search class aliases
+    | Search class shorthands
     |--------------------------------------------------------------------------
     |
-    | Here you can define any search class alias you want.
+    | Here you can define any search class shorthand you want.
     |
-    | Key will be the name of your alias and the value will be target class name
+    | Key will be the name of your shorthand and the value will be target class name
     |
     */
 
-    'aliases' => [
+    'shorthands' => [
         'like' => Johnylemon\Searchable\Search\LikeSearch::class,
         'like-end' => Johnylemon\Searchable\Search\LikeEndSearch::class,
         'like-begin' => Johnylemon\Searchable\Search\LikeBeginSearch::class,

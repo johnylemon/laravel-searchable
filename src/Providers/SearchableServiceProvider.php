@@ -30,5 +30,32 @@ class SearchableServiceProvider extends ServiceProvider
                 GenerateSearchClass::class,
             ]);
         }
+
+        //
+        // fix config
+        // 
+        $this->fixDeprecatedConfig();
+    }
+
+    /**
+     * Fix deprecated config
+     *
+     */
+    protected function fixDeprecatedConfig()
+    {
+        //
+        // previous package config contained `aliases` key
+        // but this key is renamed to `shorthands`.
+        //
+        // So to prevent breaking changes
+        // we will simply merge old `aliases` array with new `shorthands` array
+        //
+        //
+        $old = config('laravel-searchable.aliases', []);
+        $new = config('laravel-searchable.shorthands', []);
+
+        config([
+            'laravel-searchable.shorthands' => array_merge($old, $new)
+        ]);
     }
 }
