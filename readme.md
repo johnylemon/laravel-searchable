@@ -170,7 +170,7 @@ The `full_name` property uses anonymous function that will use simple concatenat
 
 The `name` property points to `first_name` property, so it will be treated as `first_name` field. Of course `first_name` must be searchable.
 
-If you would like to use `name` field to be used as `first_name` field BUT without making `first_name` searchable, just use custom Ssearch class or anonymous function:
+If you would like to use `name` field to be used as `first_name` field BUT WITHOUT making `first_name` searchable, just use custom Search class or anonymous function:
 
 ```php
 
@@ -231,7 +231,7 @@ Of course typing entire class name or callables each time may be cumbersome, so 
 ```
 
 Shorthands takes precedence over field names.
-Lets assume you have `name` field, and `username` field that points to `name` field, and there is also `name` shorthand, shorthand will be used instead of `name` field.
+Lets assume you have `name` field, and `username` field that points to `name` field, and there is also `name` shorthand. In that case shorthand will be used instead of `name` field.
 
 ```php
 
